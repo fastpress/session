@@ -1,5 +1,5 @@
 # Fastpress\Session
-
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fastpress/session/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/fastpress/session/?branch=main)
 **Fastpress\Session** is a modern, secure, and easy-to-use session management library for PHP. Crafted with simplicity and efficiency in mind, it seamlessly integrates with the Fastpress framework, yet remains flexible enough to be used in any PHP project. Whether you're building a small website or a large-scale application, Fastpress\Session provides a robust solution for handling session data securely and effectively.
 
 ## Features
