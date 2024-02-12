@@ -32,7 +32,7 @@ jobs:
         run: composer install --prefer-dist --no-progress --no-interaction --dev
 
       - name: Run PHPCS
-        run: vendor/bin/phpcs .\src\Security\Session.php 
+        run: vendor/bin/phpcs ./src/Security/Session.php 
 
       - name: Run PHPStan
-        run: vendor/bin/phpstan analyze .\src\Security\Session.php 
+        run: vendor/bin/phpstan analyze ./src/Security/Session.php 
