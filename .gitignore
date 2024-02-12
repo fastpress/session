@@ -1,0 +1,27 @@
+# Composer dependencies
+/vendor/
+
+# PHP runtime files
+composer.lock
+
+# PHP built files
+*.phar
+
+# IDE and Editor folders
+/.vscode/
+/.idea/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Cache and logs (Linux/Unix)
+*.log
+.cache
+*.tmp
+tmp/
+
+# Cache and logs (Windows)
+*.log
+*.tmp
+tmp/
