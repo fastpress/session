@@ -44,7 +44,7 @@ class Session implements \ArrayAccess
      *
      * @param array $config An array of session configuration options.
      */
-    public function __construct(array &$session = null, array $config = [])
+    public function __construct(?array &$session = null, array $config = [])
     {
         $this->session = &$session ?? $_SESSION;
         $this->applyConfig($config);
@@ -102,30 +102,34 @@ class Session implements \ArrayAccess
     /**
      * Set a flash message.
      *
-     * @param string $key     The key of the flash message.
-     * @param mixed  $message The message to set.
+     * @param string $key     The key of the flash message (e.g., 'login_page', 'registration_page')
+     * @param string $message The actual message content
+     * @param string $type    The type of the message (default: 'info')
      */
-    public function setFlash(string $key, mixed $message): void
+    public function setFlash(string $key, string $message, string $type = 'info'): void
     {
         if (!isset($this->session['flash'])) {
             $this->session['flash'] = [];
         }
-        $this->session['flash'][$key] = $message;
+        $this->session['flash'][$key] = [
+            'type' => $type,
+            'message' => $message
+        ];
     }
 
     /**
      * Get and remove a flash message.
      *
-     * @param  string $key     The key of the flash message.
-     * @param  mixed  $default The default value if flash message doesn't exist.
-     * @return mixed The flash message value.
+     * @param  string $key     The key of the flash message
+     * @param  mixed  $default The default value if flash message doesn't exist
+     * @return array|mixed     The flash message array or the default value
      */
     public function getFlash(string $key, mixed $default = null): mixed
     {
         if ($this->hasFlash($key)) {
-            $value = $this->session['flash'][$key];
+            $flash = $this->session['flash'][$key];
             unset($this->session['flash'][$key]);
-            return $value;
+            return $flash;
         }
         return $default;
     }
