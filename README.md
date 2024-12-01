@@ -21,46 +21,169 @@ composer require fastpress/session
 - PHP 7.4 or higher.
 
 ## Usage
-**Setting Session Data**
-```php
-use Fastpress\Security\Session;
 
-$session = new Session();
-$session->start();
-```
+### `start(): bool`
 
-**Setting Session Data**
-```php
-$session->set('username', 'JohnDoe');
-```
+Starts the session.
 
-**Retrieving Session Data**
-```php
-$username = $session->get('username');
-```
+**Returns:**
 
-**Flash Messages**
-```php
-// Set a flash message
-$session->setFlash('success', 'You have successfully logged in.');
-
-// Retrieve and clear the flash message
-$message = $session->getFlash('success');
-```
-
-**Destroying a Session**
-```php
-$session->destroy();
-```
-
-## Contributing
-Contributions are welcome! Please feel free to submit a pull request or open issues to improve the library.
+- `true` if the session was started successfully, `false` otherwise.
 
 
-## License
-This library is open-sourced software licensed under the MIT license.
+### `regenerateId(bool $deleteOldSession = true): bool`
 
-## Support
-If you encounter any issues or have questions, please file them in the issues section on GitHub.
+Regenerates the session ID.
+
+**Parameters:**
+
+- `$deleteOldSession`: Whether to delete the old session data.
+
+**Returns:**
+
+- `true` on success, throws `RuntimeException` on failure.
 
 
+### `token(): string`
+
+Generates a CSRF token.
+
+**Returns:**
+
+- The generated CSRF token.
+
+
+### `validateToken(string $token): bool`
+
+Validates a CSRF token.
+
+**Parameters:**
+
+- `$token`: The token to validate.
+
+**Returns:**
+
+- `true` if the token is valid, `false` otherwise.
+
+
+### `setFlash(string $key, mixed $value, string $type = 'info'): void`
+
+Sets a flash message.
+
+**Parameters:**
+
+- `$key`: The key for the flash message.
+- `$value`: The value of the flash message.
+- `$type`: The type of flash message (e.g., 'info', 'success', 'error').
+
+**Returns:**
+
+- `void`
+
+
+### `getFlash(string $key, mixed $default = null): mixed`
+
+Gets a flash message.
+
+**Parameters:**
+
+- `$key`: The key for the flash message.
+- `$default`: The default value to return if the flash message does not exist.
+
+**Returns:**
+
+- The flash message value or the default value.
+
+
+### `closeWrite(): bool`
+
+Closes the session for writing.
+
+**Returns:**
+
+- `true` on success, `false` otherwise.
+
+
+### `gc(bool $force = false): bool`
+
+Performs garbage collection on the session.
+
+**Parameters:**
+
+- `$force`: Whether to force garbage collection.
+
+**Returns:**
+
+- `true` on success, `false` otherwise.
+
+
+### `destroy(): void`
+
+Destroys the session.
+
+**Returns:**
+
+- `void`
+
+
+### `set(string $key, mixed $value): void`
+
+Sets a session variable.
+
+**Parameters:**
+
+- `$key`: The key for the session variable.
+- `$value`: The value of the session variable.
+
+**Returns:**
+
+- `void`
+
+
+### `get(string $key, mixed $default = null): mixed`
+
+Gets a session variable.
+
+**Parameters:**
+
+- `$key`: The key for the session variable.
+- `$default`: The default value to return if the session variable does not exist.
+
+**Returns:**
+
+- The session variable value or the default value.
+
+
+### `has(string $key): bool`
+
+Checks if a session variable exists.
+
+**Parameters:**
+
+- `$key`: The key for the session variable.
+
+**Returns:**
+
+- `true` if the session variable exists, `false` otherwise.
+
+
+### `delete(string $key): void`
+
+Deletes a session variable.
+
+**Parameters:**
+
+- `$key`: The key for the session variable.
+
+**Returns:**
+
+- `void`
+
+
+### `clear(): void`
+
+Clears all session variables.
+
+**Returns:**
+
+- `void`

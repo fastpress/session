@@ -2,6 +2,7 @@
     "name": "fastpress/session",
     "description": "A robust and flexible session management library for PHP, optimized for use with the Fastpress framework. Provides secure handling of session data with an easy-to-use interface.",
     "type": "library",
+    "version": "0.1.2",
     "require": {
         "php": "^7.4 || ^8.0"
     },
