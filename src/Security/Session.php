@@ -271,8 +271,6 @@ class Session implements \ArrayAccess
     }
 
 
-    // Add these methods to the Session class, right before the __destruct method:
-
     /**
      * Generates an HTML input field containing the CSRF token.
      *
