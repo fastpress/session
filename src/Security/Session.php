@@ -270,6 +270,53 @@ class Session implements \ArrayAccess
         return $default;
     }
 
+
+    // Add these methods to the Session class, right before the __destruct method:
+
+    /**
+     * Generates an HTML input field containing the CSRF token.
+     *
+     * @return string The HTML input field with the CSRF token.
+     */
+    public function csrfField(): string
+    {
+        return sprintf(
+            '<input type="hidden" name="_csrf" value="%s">',
+            htmlspecialchars($this->token(), ENT_QUOTES, 'UTF-8')
+        );
+    }
+
+    /**
+     * Checks if a flash message exists and hasn't expired.
+     *
+     * @param string $key The key of the flash message.
+     * @param string|null $type Optional type to check for specific flash message type.
+     *
+     * @return bool True if the flash message exists and is valid, false otherwise.
+     */
+    public function hasFlash(string $key, ?string $type = null): bool
+    {
+        // Check if flash data exists
+        if (!isset($this->flashData[$key])) {
+            return false;
+        }
+
+        $flash = $this->flashData[$key];
+
+        // Check if flash has expired
+        if (time() - $flash['timestamp'] > self::FLASH_LIFETIME) {
+            unset($this->session['__flash'][$key]);
+            return false;
+        }
+
+        // If type is specified, check if it matches
+        if ($type !== null && (!isset($flash['type']) || $flash['type'] !== $type)) {
+            return false;
+        }
+
+        return true;
+    }
+
     /**
      * Loads flash message data from the session.
      */
