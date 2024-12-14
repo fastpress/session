@@ -71,6 +71,7 @@ class Session implements \ArrayAccess
         }
         
         $this->session = &$_SESSION;
+        $this->loadFlashData(); // Add this line to load flash data when session starts
     }
 
     /**
@@ -238,12 +239,13 @@ class Session implements \ArrayAccess
      */
     public function setFlash(string $key, mixed $value, string $type = 'info'): void
     {
-        $this->session['__flash_new'][$key] = [
+        $this->session['__flash'][$key] = [
             'value' => $value,
             'type' => $type,
             'timestamp' => time()
         ];
     }
+    
 
     /**
      * Gets a flash message.
@@ -255,15 +257,16 @@ class Session implements \ArrayAccess
      */
     public function getFlash(string $key, mixed $default = null): mixed
     {
-        if (isset($this->flashData[$key])) {
-            $flash = $this->flashData[$key];
-
+        if (isset($this->session['__flash'][$key])) {
+            $flash = $this->session['__flash'][$key];
+    
             // Check if flash data has expired
             if (time() - $flash['timestamp'] > self::FLASH_LIFETIME) {
                 unset($this->session['__flash'][$key]);
                 return $default;
             }
-
+    
+            // Mark for removal after being retrieved
             unset($this->session['__flash'][$key]);
             return $flash['value'];
         }
@@ -295,23 +298,23 @@ class Session implements \ArrayAccess
     public function hasFlash(string $key, ?string $type = null): bool
     {
         // Check if flash data exists
-        if (!isset($this->flashData[$key])) {
+        if (!isset($this->session['__flash'][$key])) {
             return false;
         }
-
-        $flash = $this->flashData[$key];
-
+    
+        $flash = $this->session['__flash'][$key];
+    
         // Check if flash has expired
         if (time() - $flash['timestamp'] > self::FLASH_LIFETIME) {
             unset($this->session['__flash'][$key]);
             return false;
         }
-
+    
         // If type is specified, check if it matches
         if ($type !== null && (!isset($flash['type']) || $flash['type'] !== $type)) {
             return false;
         }
-
+    
         return true;
     }
 
