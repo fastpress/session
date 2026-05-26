@@ -22,8 +22,8 @@ class Session implements \ArrayAccess
     private array $flashData = [];
     /** @var bool Whether the session has been started. */
     private bool $isStarted = false;
-    /** @var int|null The last time the session ID was regenerated. */
-    private int $lastRegenerationTime;
+    /** @var int The last time the session ID was regenerated. */
+    private int $lastRegenerationTime = 0;
 
     /** @var int Session ID regeneration interval in seconds. */
     private const ID_REGENERATION_INTERVAL = 300; // 5 minutes
@@ -166,7 +166,7 @@ class Session implements \ArrayAccess
     private function checkRegenerateId(): void
     {
         $now = time();
-        if ($now - ($this->lastRegenerationTime ?? 0) > self::ID_REGENERATION_INTERVAL) {
+        if ($now - $this->lastRegenerationTime > self::ID_REGENERATION_INTERVAL) {
             $this->regenerateId();
             $this->lastRegenerationTime = $now;
             $this->session['__last_regeneration'] = $now;
@@ -365,7 +365,7 @@ class Session implements \ArrayAccess
     public function gc(bool $force = false): bool
     {
         if ($force || (mt_rand(1, 100) <= self::DEFAULT_CONFIG['gc_probability'])) {
-            return session_gc();
+            return session_gc() !== false;
         }
         return true;
     }
