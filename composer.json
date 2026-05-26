@@ -4,7 +4,7 @@
     "type": "library",
     "version": "0.1.4",
     "require": {
-        "php": "^7.4 || ^8.0"
+        "php": "^8.0"
     },
     "scripts": {
         "test": "phpunit",
@@ -38,7 +38,7 @@
     "config": {
         "optimize-autoloader": true,
         "platform": {
-            "php": "7.4"
+            "php": "8.0"
         }
     },
     "extra": {
