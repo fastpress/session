@@ -86,7 +86,7 @@ class Session implements \ArrayAccess
      */
     private function validateConfig(array $config): void
     {
-        $required = ['cookie_secure', 'cookie_httponly', 'use_strict_mode'];
+        $required = ['cookie_httponly', 'use_strict_mode'];
         foreach ($required as $key) {
             if (isset($config[$key]) && !$config[$key]) {
                 throw new RuntimeException("Security critical option '$key' cannot be disabled");
