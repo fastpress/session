@@ -64,14 +64,17 @@ class Session implements \ArrayAccess
      */
     public function __construct(array $config = [])
     {
-        // Start session first if needed
         if (session_status() === PHP_SESSION_NONE) {
-            $this->configure(array_merge(self::DEFAULT_CONFIG, $config));
+            $mergedConfig = array_merge(self::DEFAULT_CONFIG, $config);
+            $this->validateConfig($mergedConfig);
+            $this->configure($mergedConfig);
             session_start();
         }
-        
+
+        $this->isStarted = true;
         $this->session = &$_SESSION;
-        $this->loadFlashData(); // Add this line to load flash data when session starts
+        $this->lastRegenerationTime = $this->session['__last_regeneration'] ?? 0;
+        $this->loadFlashData();
     }
 
     /**
@@ -434,6 +437,18 @@ class Session implements \ArrayAccess
     public function delete(string $key): void
     {
         unset($this->session[$key]);
+    }
+
+    /**
+     * Gets all session data (excluding internal keys).
+     *
+     * @return array
+     */
+    public function all(): array
+    {
+        return array_filter($this->session, function (mixed $value, string $key): bool {
+            return !str_starts_with($key, '__') && !str_starts_with($key, '_token');
+        }, ARRAY_FILTER_USE_BOTH);
     }
 
     /**
